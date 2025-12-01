@@ -16,24 +16,30 @@ export async function GET() {
 
     // Transform payment records to include preorder data
     const paymentsWithPreorders = await Promise.all(
-      payments.map(async (payment) => {
-        // Extract preorder ID from transaction_id (format: PRE-{id})
-        const preorderId = parseInt(
-          payment.transaction_id?.replace("PRE-", "") || "0"
-        );
+      payments.map(
+        async (payment: {
+          transaction_id: string | null;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          [key: string]: any;
+        }) => {
+          // Extract preorder ID from transaction_id (format: PRE-{id})
+          const preorderId = parseInt(
+            payment.transaction_id?.replace("PRE-", "") || "0"
+          );
 
-        const preorder = await prisma.preorder.findUnique({
-          where: { id: preorderId },
-          include: {
-            product: true,
-          },
-        });
+          const preorder = await prisma.preorder.findUnique({
+            where: { id: preorderId },
+            include: {
+              product: true,
+            },
+          });
 
-        return {
-          ...payment,
-          preorder,
-        };
-      })
+          return {
+            ...payment,
+            preorder,
+          };
+        }
+      )
     );
 
     return NextResponse.json(
