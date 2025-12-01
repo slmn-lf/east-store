@@ -72,23 +72,21 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({
     <>
       {/* Mobile Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 bg-linear-to-r from-gray-900 to-gray-800 text-white border-b border-gray-700 z-50 md:hidden">
-        <div className="h-16 px-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-            <h1 className="text-lg font-bold bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              {title}
-            </h1>
-          </div>
+        <div className="h-12 md:h-16 px-2 md:px-4 flex items-center justify-between">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-1 hover:bg-gray-700 rounded transition-colors shrink-0"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+          <h1 className="text-xs md:text-lg font-bold bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent truncate flex-1 mx-2">
+            {title}
+          </h1>
 
           <Link
             href="/"
-            className="px-3 py-2 text-xs font-medium text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-lg transition-all"
+            className="hidden sm:block px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm font-medium text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded transition-all shrink-0"
           >
             Go to Site
           </Link>
@@ -96,24 +94,48 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({
 
         {/* Mobile Menu Dropdown */}
         {isOpen && (
-          <div className="bg-gray-800/95 backdrop-blur-sm border-b border-gray-700">
-            <div className="px-4 py-2 space-y-1 max-h-125 overflow-y-auto">
+          <div className="bg-gray-800/95 backdrop-blur-sm border-b border-gray-700 max-h-[calc(100vh-3rem)] overflow-y-auto">
+            <div className="px-2 md:px-4 py-1 space-y-0.5">
               {items.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                    "flex items-center gap-2 px-2 md:px-4 py-2 md:py-2.5 rounded transition-all duration-200 text-xs md:text-sm",
                     isActive(item.href)
                       ? "bg-linear-to-r from-amber-500 to-orange-500 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   )}
                   onClick={() => setIsOpen(false)}
                 >
-                  <div className="shrink-0">{item.icon}</div>
-                  <span className="font-medium text-sm">{item.name}</span>
+                  <div className="shrink-0 w-4 h-4 md:w-5 md:h-5">
+                    {item.icon}
+                  </div>
+                  <span className="font-medium truncate">{item.name}</span>
                 </Link>
               ))}
+
+              {/* Go to Site Button */}
+              <Link
+                href="/"
+                className="sm:hidden flex items-center gap-2 px-2 md:px-4 py-2 md:py-2.5 rounded bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white transition-all duration-200 text-xs md:text-sm font-medium mt-2 border-t border-gray-700 pt-2 md:pt-2.5"
+                onClick={() => setIsOpen(false)}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+                <span className="font-medium">Go to Site</span>
+              </Link>
 
               {/* Logout Button */}
               <button
@@ -121,10 +143,10 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({
                   setIsOpen(false);
                   onLogout();
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-300 hover:bg-red-500/20 transition-all duration-200 mt-4 border-t border-gray-700 pt-4"
+                className="w-full flex items-center gap-2 px-2 md:px-4 py-2 md:py-2.5 rounded text-red-300 hover:bg-red-500/20 transition-all duration-200 mt-2 border-t border-gray-700 pt-2 md:pt-2.5 text-xs md:text-sm"
               >
-                <LogOut size={20} />
-                <span className="font-medium text-sm">Logout</span>
+                <LogOut size={16} className="md:w-5 md:h-5" />
+                <span className="font-medium">Logout</span>
               </button>
             </div>
           </div>
@@ -134,7 +156,7 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({
       {/* Overlay for mobile menu */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 md:hidden z-40 top-16"
+          className="fixed inset-0 bg-black/50 md:hidden z-40 top-12"
           onClick={() => setIsOpen(false)}
         />
       )}

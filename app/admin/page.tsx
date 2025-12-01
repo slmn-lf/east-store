@@ -281,48 +281,53 @@ export default function AdminPage() {
           </div>
 
           {/* Recent Preorders Section */}
-          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 p-8 shadow-lg">
+          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 p-4 md:p-8 shadow-lg">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6">
                 Recent Preorders
               </h2>
 
               {recentPreorders.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-2 md:space-y-4">
                   {recentPreorders.map((preorder) => (
                     <div
                       key={preorder.id}
-                      className="backdrop-blur-md bg-white/5 rounded-lg border border-white/10 p-4 hover:bg-white/10 transition-all"
+                      className="backdrop-blur-md bg-white/5 rounded-lg border border-white/10 p-3 md:p-4 hover:bg-white/10 transition-all"
                     >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <p className="font-semibold text-white">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 md:gap-3 mb-2 flex-wrap">
+                            <p className="font-semibold text-white text-sm md:text-base truncate">
                               {preorder.customer_name}
                             </p>
-                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 border border-blue-400/30 shrink-0">
                               {preorder.status}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-400 mb-1">
+                          <p className="text-xs md:text-sm text-gray-400 mb-1 truncate">
                             {preorder.product?.title || "Product"}
                           </p>
-                          <div className="flex gap-6 text-sm text-gray-400">
-                            <span>Size: {preorder.size}</span>
-                            <span>Qty: {preorder.quantity}</span>
-                            <span>
+                          <div className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-sm text-gray-400">
+                            <span className="whitespace-nowrap">
+                              Size: {preorder.size}
+                            </span>
+                            <span className="whitespace-nowrap">
+                              Qty: {preorder.quantity}
+                            </span>
+                            <span className="whitespace-nowrap">
                               Rp {preorder.total_price.toLocaleString("id-ID")}
                             </span>
-                            <span className="text-gray-500">
+                            <span className="text-gray-500 whitespace-nowrap">
                               {new Date(preorder.created_at).toLocaleDateString(
-                                "id-ID"
+                                "id-ID",
+                                { month: "short", day: "numeric" }
                               )}
                             </span>
                           </div>
                         </div>
                         <button
                           onClick={() => markAsRead(preorder.id)}
-                          className="px-4 py-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 text-green-300 font-medium text-sm transition-all whitespace-nowrap"
+                          className="w-full md:w-auto px-3 md:px-4 py-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 text-green-300 font-medium text-xs md:text-sm transition-all"
                         >
                           Mark as Read
                         </button>
@@ -332,7 +337,9 @@ export default function AdminPage() {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-400">No recent preorders</p>
+                  <p className="text-gray-400 text-sm md:text-base">
+                    No recent preorders
+                  </p>
                 </div>
               )}
             </div>
