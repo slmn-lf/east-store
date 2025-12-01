@@ -285,113 +285,199 @@ export default function PreorderPage() {
                   Tidak ada preorder yang ditemukan
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-white/10 bg-white/5">
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          ID
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Produk
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Customer
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Telepon
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Size
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Qty
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Total
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
-                          Tgl
-                        </th>
-                        <th className="px-6 py-3 text-center text-sm font-semibold text-gray-200">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredPreorders.map((preorder) => (
-                        <tr
-                          key={preorder.id}
-                          className="border-b border-white/10 hover:bg-white/5 transition-colors"
-                        >
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            #{preorder.id}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            {preorder.product?.title || "N/A"}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            {preorder.customer_name}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            {preorder.customer_phone}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            {preorder.size}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100">
-                            {preorder.quantity}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-100 font-semibold">
-                            Rp {preorder.total_price.toLocaleString("id-ID")}
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            {preorder.status === "unconfirmed" ? (
-                              <button
-                                onClick={() =>
-                                  handleStatusToggle(
-                                    preorder.id,
-                                    preorder.status
-                                  )
-                                }
-                                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold transition-all hover:scale-105 cursor-pointer ${getStatusBadge(
-                                  preorder.status
-                                )}`}
-                                title="Klik untuk konfirmasi dan lanjut ke pembayaran"
-                              >
-                                {formatStatus(preorder.status)}
-                              </button>
-                            ) : (
-                              <span
-                                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(
-                                  preorder.status
-                                )}`}
-                              >
-                                {formatStatus(preorder.status)}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-300">
-                            {new Date(preorder.created_at).toLocaleDateString(
-                              "id-ID"
-                            )}
-                          </td>
-                          <td className="px-6 py-4 text-center">
-                            <button
-                              onClick={() => handleDelete(preorder.id)}
-                              className="text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
-                            >
-                              Hapus
-                            </button>
-                          </td>
+                <>
+                  {/* Desktop Table */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-white/10 bg-white/5">
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            ID
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Produk
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Customer
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Telepon
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Size
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Qty
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Total
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-200">
+                            Tgl
+                          </th>
+                          <th className="px-6 py-3 text-center text-sm font-semibold text-gray-200">
+                            Aksi
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {filteredPreorders.map((preorder) => (
+                          <tr
+                            key={preorder.id}
+                            className="border-b border-white/10 hover:bg-white/5 transition-colors"
+                          >
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              #{preorder.id}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              {preorder.product?.title || "N/A"}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              {preorder.customer_name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              {preorder.customer_phone}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              {preorder.size}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100">
+                              {preorder.quantity}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-100 font-semibold">
+                              Rp {preorder.total_price.toLocaleString("id-ID")}
+                            </td>
+                            <td className="px-6 py-4 text-sm">
+                              {preorder.status === "unconfirmed" ? (
+                                <button
+                                  onClick={() =>
+                                    handleStatusToggle(
+                                      preorder.id,
+                                      preorder.status
+                                    )
+                                  }
+                                  className={`inline-block px-3 py-1 rounded-full text-xs font-semibold transition-all hover:scale-105 cursor-pointer ${getStatusBadge(
+                                    preorder.status
+                                  )}`}
+                                  title="Klik untuk konfirmasi dan lanjut ke pembayaran"
+                                >
+                                  {formatStatus(preorder.status)}
+                                </button>
+                              ) : (
+                                <span
+                                  className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(
+                                    preorder.status
+                                  )}`}
+                                >
+                                  {formatStatus(preorder.status)}
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-300">
+                              {new Date(preorder.created_at).toLocaleDateString(
+                                "id-ID"
+                              )}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              <button
+                                onClick={() => handleDelete(preorder.id)}
+                                className="text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
+                              >
+                                Hapus
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-3 p-4">
+                    {filteredPreorders.map((preorder) => (
+                      <div
+                        key={preorder.id}
+                        className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-2"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-gray-400">#{preorder.id}</p>
+                            <p className="font-semibold text-white text-sm truncate">
+                              {preorder.product?.title || "N/A"}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => handleDelete(preorder.id)}
+                            className="text-red-400 hover:text-red-300 text-xs font-medium transition-colors shrink-0"
+                          >
+                            Hapus
+                          </button>
+                        </div>
+
+                        <div className="space-y-1 text-xs text-gray-300">
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Customer:</span>
+                            <span className="font-medium">{preorder.customer_name}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Telepon:</span>
+                            <span className="font-medium">{preorder.customer_phone}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Size:</span>
+                            <span className="font-medium">{preorder.size}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Qty:</span>
+                            <span className="font-medium">{preorder.quantity}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Total:</span>
+                            <span className="font-semibold text-white">
+                              Rp {preorder.total_price.toLocaleString("id-ID")}
+                            </span>
+                          </div>
+                          <div className="flex justify-between pt-2 border-t border-white/10">
+                            <span className="text-gray-400">Tanggal:</span>
+                            <span className="font-medium">
+                              {new Date(preorder.created_at).toLocaleDateString(
+                                "id-ID",
+                                { month: "short", day: "numeric", year: "2-digit" }
+                              )}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="pt-2 border-t border-white/10">
+                          {preorder.status === "unconfirmed" ? (
+                            <button
+                              onClick={() =>
+                                handleStatusToggle(preorder.id, preorder.status)
+                              }
+                              className={`w-full text-xs font-semibold py-2 rounded transition-all ${getStatusBadge(
+                                preorder.status
+                              )}`}
+                              title="Klik untuk konfirmasi dan lanjut ke pembayaran"
+                            >
+                              {formatStatus(preorder.status)}
+                            </button>
+                          ) : (
+                            <span
+                              className={`block w-full text-center text-xs font-semibold py-2 rounded ${getStatusBadge(
+                                preorder.status
+                              )}`}
+                            >
+                              {formatStatus(preorder.status)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>
