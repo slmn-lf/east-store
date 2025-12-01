@@ -14,6 +14,8 @@ import {
   Image as ImageIcon,
   LogOut,
   Ruler,
+  CreditCard,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
@@ -37,9 +39,19 @@ const defaultItems: AdminMobileNavItem[] = [
     href: "/admin/size-cards",
     icon: <Ruler size={20} />,
   },
-  { name: "Artwork", href: "/admin/artwork", icon: <ImageIcon size={20} /> },
-  { name: "Orders", href: "/admin/orders", icon: <ShoppingCart size={20} /> },
-  { name: "Users", href: "/admin/users", icon: <Users size={20} /> },
+  {
+    name: "Artwork",
+    href: "/admin/artwork",
+    icon: <ImageIcon size={20} />,
+  },
+  {
+    name: "Preorder",
+    href: "/admin/preorder",
+    icon: <ShoppingCart size={20} />,
+  },
+  { name: "Payments", href: "/admin/payments", icon: <CreditCard size={20} /> },
+  { name: "Mail", href: "/admin/mail", icon: <Mail size={20} /> },
+  { name: "User Settings", href: "/admin/user", icon: <Users size={20} /> },
   { name: "Settings", href: "/admin/settings", icon: <Settings size={20} /> },
 ];
 
