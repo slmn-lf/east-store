@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "payments" ADD COLUMN "paid_amount_cents" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "status" SET DEFAULT 'pending';

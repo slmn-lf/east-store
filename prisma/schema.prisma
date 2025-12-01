@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model AdminUser {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  password_hash String
+  name          String?
+  wa_store      String?  // Nomor WA toko
+  role          String   @default("admin")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  products      Product[]
+  @@map("admin_users")
+}
+
+enum ProductStatus {
+  coming_soon
+  pre_order
+  close
+}
+
+enum PreorderStatus {
+  unconfirmed
+  confirmed
+}
+
+model Product {
+  id              Int      @id @default(autoincrement())
+  slug            String   @unique
+  title           String
+  description     String?
+  price_idr       Int
+  image_url       String?
+  url             String?
+  status          ProductStatus
+  wa_store        String?
+  size_card_template_id Int?
+  user_id         Int
+  user            AdminUser @relation(fields: [user_id], references: [id])
+  sizeCardTemplate SizeCardTemplate? @relation(fields: [size_card_template_id], references: [id], onDelete: SetNull)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  orderItems      GuestOrderItem[]
+  preorders       Preorder[]
+  features        ProductFeature[]
+  images          ProductImage[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id          Int      @id @default(autoincrement())
+  product_id  Int
+  product     Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  image_url   String
+  order       Int      @default(0)  // Sort order for images
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("product_images")
+}
+
+model ProductFeature {
+  id                  Int      @id @default(autoincrement())
+  product_id          Int
+  product             Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  feature_type        String   // premium_cotton, high_quality_plastisol, nationwide_shipping, quality_guarantee
+  custom_label        String?  // Custom label if user wants to override default
+  custom_description  String?  // Custom description if user wants to override default
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@unique([product_id, feature_type])
+  @@map("product_features")
+}
+
+model GuestOrder {
+  id             Int               @id @default(autoincrement())
+  customer_name  String
+  customer_phone String
+  customer_email String?
+  status         String            @default("pending")
+  total_cents    Int
+  created_at     DateTime          @default(now())
+  updated_at     DateTime          @updatedAt
+  items          GuestOrderItem[]
+  payments       Payment[]
+
+  @@map("guest_orders")
+}
+
+model GuestOrderItem {
+  id          Int        @id @default(autoincrement())
+  order_id    Int
+  product_id  Int?
+  quantity    Int        @default(1)
+  price_cents Int
+  order       GuestOrder @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product     Product?   @relation(fields: [product_id], references: [id], onDelete: SetNull)
+
+  @@map("guest_order_items")
+}
+
+model Payment {
+  id                  Int         @id @default(autoincrement())
+  order_id            Int?
+  payment_method      String
+  amount_cents        Int
+  paid_amount_cents   Int         @default(0)
+  status              String      @default("pending")
+  transaction_id      String?
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+  order               GuestOrder? @relation(fields: [order_id], references: [id], onDelete: SetNull)
+
+  @@map("payments")
+}
+
+model Artwork {
+  id          Int      @id @default(autoincrement())
+  title       String
+  artist      String?
+  image_url   String?
+  description String?
+  created_at  DateTime @default(now())
+
+  @@map("artworks")
+}
+
+model Preorder {
+  id               Int              @id @default(autoincrement())
+  customer_name    String
+  customer_phone   String
+  customer_address String           // Alamat lengkap untuk pengiriman
+  product_id       Int?
+  size             String           // Ukuran T-shirt
+  quantity         Int              @default(1)
+  total_price      Int              // Harga total dalam rupiah
+  status           PreorderStatus   @default(unconfirmed)
+  payment_id       Int?
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  product          Product?         @relation(fields: [product_id], references: [id], onDelete: SetNull)
+
+  @@map("preorders")
+}
+
+model SizeCardTemplate {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  description String?
+  columns     String?     // JSON array of column definitions: [{id, label, unit}, ...]
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  rows        SizeCardRow[]
+  products    Product[]
+
+  @@map("size_card_templates")
+}
+
+model SizeCardRow {
+  id          Int                @id @default(autoincrement())
+  template_id Int
+  template    SizeCardTemplate   @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  size        String
+  panjang     Int
+  lebarDada   Int
+  lebarBahu   Int
+  panjangLengan Int
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+
+  @@map("size_card_rows")
+}
+
+model Setting {
+  key        String   @id
+  value      String
+  updated_at DateTime @updatedAt
+
+  @@map("settings")
+}
