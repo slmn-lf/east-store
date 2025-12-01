@@ -200,7 +200,7 @@ export async function getAllContentSettings() {
 
     const result: Record<string, ContentSettings> = {};
 
-    settings.forEach((setting) => {
+    settings.forEach((setting: { key: string; value: string }) => {
       const section = setting.key.replace("content_settings_", "");
       result[section] = JSON.parse(setting.value);
     });
