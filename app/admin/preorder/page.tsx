@@ -404,7 +404,9 @@ export default function PreorderPage() {
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs text-gray-400">#{preorder.id}</p>
+                            <p className="text-xs text-gray-400">
+                              #{preorder.id}
+                            </p>
                             <p className="font-semibold text-white text-sm truncate">
                               {preorder.product?.title || "N/A"}
                             </p>
@@ -420,11 +422,15 @@ export default function PreorderPage() {
                         <div className="space-y-1 text-xs text-gray-300">
                           <div className="flex justify-between">
                             <span className="text-gray-400">Customer:</span>
-                            <span className="font-medium">{preorder.customer_name}</span>
+                            <span className="font-medium">
+                              {preorder.customer_name}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Telepon:</span>
-                            <span className="font-medium">{preorder.customer_phone}</span>
+                            <span className="font-medium">
+                              {preorder.customer_phone}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Size:</span>
@@ -432,7 +438,9 @@ export default function PreorderPage() {
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Qty:</span>
-                            <span className="font-medium">{preorder.quantity}</span>
+                            <span className="font-medium">
+                              {preorder.quantity}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-400">Total:</span>
@@ -445,7 +453,11 @@ export default function PreorderPage() {
                             <span className="font-medium">
                               {new Date(preorder.created_at).toLocaleDateString(
                                 "id-ID",
-                                { month: "short", day: "numeric", year: "2-digit" }
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "2-digit",
+                                }
                               )}
                             </span>
                           </div>

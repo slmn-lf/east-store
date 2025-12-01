@@ -69,7 +69,10 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
           <TableBody>
             {payments.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-gray-400">
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-gray-400"
+                >
                   Tidak ada data pembayaran
                 </TableCell>
               </TableRow>
@@ -168,9 +171,11 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
                       {customerName}
                     </p>
                   </div>
-                  <Badge variant={isPaid ? "success" : "warning"} className="shrink-0">
-                    {isPaid ? "Lunas" : "Belum Lunas"}
-                  </Badge>
+                  <div className="shrink-0">
+                    <Badge variant={isPaid ? "success" : "warning"}>
+                      {isPaid ? "Lunas" : "Belum Lunas"}
+                    </Badge>
+                  </div>
                 </div>
 
                 {/* Amount Info */}
@@ -189,7 +194,9 @@ export const PaymentTable: React.FC<PaymentTableProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Sisa:</span>
-                    <span className={`font-semibold ${isPaid ? "text-green-300" : "text-orange-300"}`}>
+                    <span
+                      className={`font-semibold ${isPaid ? "text-green-300" : "text-orange-300"}`}
+                    >
                       {formatCurrency(remaining)}
                     </span>
                   </div>
